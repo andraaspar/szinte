@@ -1,0 +1,7 @@
+.sz_row {
+	display: flex;
+
+	&.sz__1 {
+		gap: 1px;
+	}
+}

@@ -1,0 +1,34 @@
+.sz_color_button {
+	--value: 0%;
+	position: absolute;
+	transform: translate(-50%, 50%);
+	color: white;
+	border: 1px solid white;
+	font-size: 10px;
+	font-weight: bold;
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	user-select: none;
+
+	&.sz__l {
+		left: 20%;
+		background: yellowgreen;
+	}
+	&.sz__c {
+		left: 40%;
+		background: crimson;
+	}
+	&.sz__h {
+		left: 60%;
+		background: deepskyblue;
+	}
+	&.sz__a {
+		left: 80%;
+		background: black;
+	}
+}

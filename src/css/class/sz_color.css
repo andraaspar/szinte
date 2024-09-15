@@ -1,0 +1,16 @@
+.sz_color {
+	flex: 1 0 100px;
+	height: 300px;
+	position: relative;
+	padding: 10px;
+	color: black;
+
+	&.sz__dark {
+		color: white;
+	}
+}
+.sz_color_inner {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}

@@ -1,0 +1,8 @@
+button,
+select {
+	user-select: none;
+}
+
+input {
+	flex: 1 1 auto;
+}
