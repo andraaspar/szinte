@@ -29,10 +29,10 @@ export function ColorComp(props: ColorCompProps) {
 			return new Color("black").to("lch")
 		}
 	})
-	const getOutputColor = createMemo(() => getColor().to(appStore.output))
+	const getOutputColor = createMemo(() => getColor().to(appStore.outputSpace))
 	const getOutput = createMemo(() =>
 		getOutputColor().toString({
-			format: appStore.output === "srgb" ? "hex" : undefined,
+			format: appStore.outputSpace === "srgb" ? "hex" : undefined,
 		}),
 	)
 	const [getInnerRef, setInnerRef] = createSignal<HTMLDivElement>()
@@ -101,7 +101,7 @@ export function ColorComp(props: ColorCompProps) {
 								getOutputColor()
 									.toGamut()
 									.toString({
-										format: appStore.output === "srgb" ? "hex" : "",
+										format: appStore.outputSpace === "srgb" ? "hex" : "",
 									}),
 							)
 						}}

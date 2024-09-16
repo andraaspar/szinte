@@ -1,5 +1,5 @@
 import Color from "colorjs.io"
-import { IAppState } from "../../model/IAppState"
+import { IAppState } from "../model/IAppState"
 
 export function applyInterpolation({
 	interpolation,

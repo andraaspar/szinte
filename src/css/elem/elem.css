@@ -1,8 +1,17 @@
+html {
+	tab-size: 2;
+}
+
 button,
 select {
 	user-select: none;
 }
 
-input {
+input,
+textarea {
 	flex: 1 1 auto;
+}
+
+textarea {
+	resize: vertical;
 }

@@ -1,11 +1,14 @@
-import { createEffect, createSelector, Index, Show } from "solid-js"
+import { createEffect, createMemo, createSelector, Index, Show } from "solid-js"
 import { createStore, produce, reconcile } from "solid-js/store"
-import { applyInterpolation } from "../css/fun/applyInterpolation"
-import { easeInInterpolation } from "../css/fun/easeInInterpolation"
-import { easeInOutInterpolation } from "../css/fun/easeInOutInterpolation"
-import { easeOutInterpolation } from "../css/fun/easeOutInterpolation"
-import { linearInterpolation } from "../css/fun/linearInterpolation"
+import { applyInterpolation } from "../fun/applyInterpolation"
+import { easeInInterpolation } from "../fun/easeInInterpolation"
+import { easeInOutInterpolation } from "../fun/easeInOutInterpolation"
+import { easeOutInterpolation } from "../fun/easeOutInterpolation"
+import { getExtensionByOutputFormat } from "../fun/getExtensionByOutputFormat"
+import { getOutput } from "../fun/getOutput"
+import { linearInterpolation } from "../fun/linearInterpolation"
 import { IAppState } from "../model/IAppState"
+import { OutputFormat } from "../model/OutputFomat"
 import { sz_dark, sz_row__1 } from "./ClassName"
 import { ColorComp } from "./ColorComp"
 import { ContextAppStore } from "./ContextAppStore"
@@ -15,10 +18,12 @@ export interface AppCompProps {}
 export function AppComp(props: AppCompProps) {
 	const [appStore, setAppStore] = createStore<IAppState>({
 		palette: ["slategray"],
-		output: "lch",
+		outputSpace: "lch",
 		selected: -1,
 		lastSelected: -1,
 		channel: "l",
+		outputFormat: OutputFormat.Css,
+		fileName: "palette",
 	})
 	function updateAppStore(updater: (it: IAppState) => void) {
 		setAppStore(produce(updater))
@@ -45,6 +50,7 @@ export function AppComp(props: AppCompProps) {
 		})
 	}
 	const selectedIndex = createSelector(() => appStore.selected)
+	const getOutputValue = createMemo(() => getOutput({ appStore }))
 	return (
 		<ContextAppStore.Provider value={{ appStore, updateAppStore }}>
 			<div class={sz_row__1}>
@@ -56,10 +62,10 @@ export function AppComp(props: AppCompProps) {
 					Light
 				</button>
 				<select
-					value={appStore.output}
+					value={appStore.outputSpace}
 					onChange={(e) => {
 						updateAppStore((it) => {
-							it.output = e.currentTarget.value
+							it.outputSpace = e.currentTarget.value
 						})
 					}}
 				>
@@ -166,6 +172,52 @@ export function AppComp(props: AppCompProps) {
 					</button>
 				</div>
 			</Show>
+			<div class={sz_row__1}>
+				<input
+					value={appStore.fileName}
+					onInput={(e) => {
+						const value = e.currentTarget.value
+						updateAppStore((it) => {
+							it.fileName = value
+						})
+					}}
+				/>
+				<select
+					value={appStore.outputFormat}
+					onChange={(e) => {
+						const value = e.currentTarget.value as OutputFormat
+						updateAppStore((it) => {
+							it.outputFormat = value
+						})
+					}}
+				>
+					<option value={OutputFormat.Css} label={"CSS"} />
+					<option value={OutputFormat.Gimp} label={"Gimp"} />
+					<option value={OutputFormat.Synfig} label={"Synfig"} />
+				</select>
+				<button
+					onClick={() => {
+						navigator.clipboard.writeText(getOutputValue())
+					}}
+				>
+					Copy
+				</button>
+				<a
+					href={"#"}
+					download={
+						appStore.fileName +
+						"." +
+						getExtensionByOutputFormat(appStore.outputFormat)
+					}
+					onPointerDown={(e) => {
+						const file = new Blob([getOutputValue()], { type: "text/plain" })
+						e.currentTarget.href = URL.createObjectURL(file)
+					}}
+				>
+					Save
+				</a>
+			</div>
+			<textarea value={getOutputValue()} readonly rows={10} />
 		</ContextAppStore.Provider>
 	)
 }
