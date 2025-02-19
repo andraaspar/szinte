@@ -51,7 +51,7 @@ export function ColorComp(props: ColorCompProps) {
 					color.oklch.l = ratio
 					break
 				case 'c':
-					color.oklch.c = ratio
+					color.oklch.c = ratio * 0.4
 					break
 				case 'h':
 					color.oklch.h = ratio * 360
@@ -123,7 +123,7 @@ export function ColorComp(props: ColorCompProps) {
 				<div
 					class={sz_color_button__c}
 					style={{
-						bottom: Math.min(100, Math.max(0, getColor().oklch.c)) * 100 + '%',
+						bottom: Math.min(100, Math.max(0, getColor().oklch.c)) * 250 + '%',
 					}}
 					onPointerDown={() => {
 						drag('c')
