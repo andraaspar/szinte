@@ -1,5 +1,5 @@
-import Color from "colorjs.io"
-import { IAppState } from "../model/IAppState"
+import Color from 'colorjs.io'
+import { IAppState } from '../model/IAppState'
 
 export function applyInterpolation({
 	interpolation,
@@ -12,25 +12,25 @@ export function applyInterpolation({
 }) {
 	const i1 = Math.min(appStore.selected, appStore.lastSelected)
 	const i2 = Math.max(appStore.selected, appStore.lastSelected)
-	const c1 = new Color(appStore.palette[i1]).to("lch")
-	const c2 = new Color(appStore.palette[i2]).to("lch")
+	const c1 = new Color(appStore.palette[i1]).to('oklch')
+	const c2 = new Color(appStore.palette[i2]).to('oklch')
 	const steps = i2 - i1 - 1
 	updateAppStore((it) => {
 		for (let i = 1; i <= steps; i++) {
 			const t = interpolation(i / (steps + 1))
 			const index = i1 + i
-			const c = new Color(it.palette[index]).to("lch")
+			const c = new Color(it.palette[index]).to('oklch')
 			switch (it.channel) {
-				case "l":
-					c.lch.l = c1.lch.l + (c2.lch.l - c1.lch.l) * t
+				case 'l':
+					c.oklch.l = c1.oklch.l + (c2.oklch.l - c1.oklch.l) * t
 					break
-				case "c":
-					c.lch.c = c1.lch.c + (c2.lch.c - c1.lch.c) * t
+				case 'c':
+					c.oklch.c = c1.oklch.c + (c2.oklch.c - c1.oklch.c) * t
 					break
-				case "h":
-					c.lch.h = c1.lch.h + (c2.lch.h - c1.lch.h) * t
+				case 'h':
+					c.oklch.h = c1.oklch.h + (c2.oklch.h - c1.oklch.h) * t
 					break
-				case "a":
+				case 'a':
 					c.alpha = c1.alpha + (c2.alpha - c1.alpha) * t
 					break
 			}
